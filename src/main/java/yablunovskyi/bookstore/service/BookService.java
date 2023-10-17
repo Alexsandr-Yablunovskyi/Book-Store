@@ -1,10 +1,11 @@
 package yablunovskyi.bookstore.service;
 
 import java.util.List;
-import yablunovskyi.bookstore.model.Book;
+import yablunovskyi.bookstore.dto.BookDto;
+import yablunovskyi.bookstore.dto.CreateBookRequestDto;
 
 public interface BookService {
-    Book save(Book book);
+    BookDto save(CreateBookRequestDto requestDto);
     
-    List<Book> findAll();
+    List<BookDto> findAll();
 }
