@@ -7,5 +7,9 @@ import yablunovskyi.bookstore.dto.CreateBookRequestDto;
 public interface BookService {
     BookDto save(CreateBookRequestDto requestDto);
     
+    BookDto findById(Long id);
+    
+    List<BookDto> findAllByAuthor(String author);
+    
     List<BookDto> findAll();
 }

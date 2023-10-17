@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import yablunovskyi.bookstore.exception.DataProcessingException;
@@ -29,6 +30,26 @@ public class BookRepositoryImpl implements BookRepository {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't creat a new book", e);
+        }
+    }
+    
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Book book = entityManager.find(Book.class, id);
+            return Optional.ofNullable(book);
+        }
+    }
+    
+    @Override
+    public List<Book> findAllByAuthor(String author) {
+        String lowerCaseAuthor = author.toLowerCase();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            return entityManager.createQuery(
+                    "SELECT b FROM Book b WHERE lower(b.author) LIKE :author", Book.class)
+                    .setParameter("author", "%" + lowerCaseAuthor + "%")
+                    .getResultList();
+        
         }
     }
     
