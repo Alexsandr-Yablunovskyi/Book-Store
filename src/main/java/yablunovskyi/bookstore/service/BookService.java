@@ -9,7 +9,7 @@ public interface BookService {
     
     BookDto findById(Long id);
     
-    List<BookDto> findAllByAuthor(String author);
+    //List<BookDto> findAllByAuthor(String author);
     
     List<BookDto> findAll();
 }

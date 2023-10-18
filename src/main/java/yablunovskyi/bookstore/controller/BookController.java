@@ -29,10 +29,10 @@ public class BookController {
         return bookService.findById(id);
     }
     
-    @GetMapping("/by-author")
+    /*@GetMapping("/by-author")
     public List<BookDto> findAllByAuthor(@RequestParam String author) {
         return bookService.findAllByAuthor(author);
-    }
+    }*/
     
     @PostMapping
     public BookDto save(@RequestBody CreateBookRequestDto requestDto) {
