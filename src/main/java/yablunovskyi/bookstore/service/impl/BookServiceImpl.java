@@ -37,10 +37,10 @@ public class BookServiceImpl implements BookService {
                 .toList();
     }
     
-    @Override
+    /*@Override
     public List<BookDto> findAllByAuthor(String author) {
         return bookRepository.findAllByAuthor(author).stream()
                 .map(bookMapper::toDto)
                 .toList();
-    }
+    }*/
 }

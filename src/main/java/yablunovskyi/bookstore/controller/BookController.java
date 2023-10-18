@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yablunovskyi.bookstore.dto.BookDto;
 import yablunovskyi.bookstore.dto.CreateBookRequestDto;
@@ -29,11 +28,11 @@ public class BookController {
         return bookService.findById(id);
     }
     
-    @GetMapping("/by-author")
+    /* @GetMapping("/by-author")
     public List<BookDto> findAllByAuthor(@RequestParam String author) {
         return bookService.findAllByAuthor(author);
     }
-    
+    */
     @PostMapping
     public BookDto save(@RequestBody CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
