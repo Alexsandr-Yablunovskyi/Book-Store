@@ -1,12 +1,17 @@
 package yablunovskyi.bookstore.mapper;
 
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import yablunovskyi.bookstore.config.MapperConfig;
+import org.mapstruct.NullValueCheckStrategy;
 import yablunovskyi.bookstore.dto.BookDto;
 import yablunovskyi.bookstore.dto.CreateBookRequestDto;
 import yablunovskyi.bookstore.model.Book;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(
+        componentModel = "spring",
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface BookMapper {
     BookDto toDto(Book book);
     

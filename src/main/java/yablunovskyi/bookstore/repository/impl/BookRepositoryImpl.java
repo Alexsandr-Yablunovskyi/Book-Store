@@ -8,6 +8,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import yablunovskyi.bookstore.exception.DataProcessingException;
+import yablunovskyi.bookstore.exception.EntityNotFoundException;
 import yablunovskyi.bookstore.model.Book;
 import yablunovskyi.bookstore.repository.BookRepository;
 
@@ -38,6 +39,18 @@ public class BookRepositoryImpl implements BookRepository {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             Book book = entityManager.find(Book.class, id);
             return Optional.ofNullable(book);
+        } catch (RuntimeException e) {
+            throw new EntityNotFoundException(
+                    "Can't find a book by id: %d".formatted(id), e);
+        }
+    }
+    
+    @Override
+    public List<Book> findAll() {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            return entityManager.createQuery("FROM Book", Book.class).getResultList();
+        } catch (RuntimeException e) {
+            throw new EntityNotFoundException("Can't get all books from DB", e);
         }
     }
     
@@ -49,16 +62,6 @@ public class BookRepositoryImpl implements BookRepository {
                     "SELECT b FROM Book b WHERE lower(b.author) LIKE :author", Book.class)
                     .setParameter("author", "%" + lowerCaseAuthor + "%")
                     .getResultList();
-        
-        }
-    }
-    
-    @Override
-    public List<Book> findAll() {
-        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            return entityManager.createQuery("FROM Book", Book.class).getResultList();
-        } catch (RuntimeException e) {
-            throw new DataProcessingException("Can't get all books from DB", e);
         }
     }
 }

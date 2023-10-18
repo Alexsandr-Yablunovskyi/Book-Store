@@ -15,7 +15,7 @@ import yablunovskyi.bookstore.service.BookService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/books")
+@RequestMapping(value = "/api/books")
 public class BookController {
     private final BookService bookService;
     
@@ -38,5 +38,4 @@ public class BookController {
     public BookDto save(@RequestBody CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
-    
 }
