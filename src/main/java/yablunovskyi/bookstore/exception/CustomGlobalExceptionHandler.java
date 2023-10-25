@@ -1,6 +1,5 @@
 package yablunovskyi.bookstore.exception;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,17 +28,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .map(this::getErrorMessage)
                 .toList();
         body.put("errors", errors);
-        
         return new ResponseEntity<>(body, headers, status);
     }
     
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("timestamp: ").append(LocalDateTime.now()).append(System.lineSeparator())
-                .append("status: entity not found").append(System.lineSeparator())
-                .append("error: ").append(e.getMessage());
-        return new ResponseEntity<>(builder.toString(), HttpStatus.NOT_FOUND);
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("errors", e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     
     private String getErrorMessage(ObjectError e) {

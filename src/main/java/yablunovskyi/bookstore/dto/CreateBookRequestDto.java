@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import org.hibernate.validator.constraints.URL;
 
 public record CreateBookRequestDto(
         @NotBlank(message = "can't be blank or null")
@@ -21,7 +20,7 @@ public record CreateBookRequestDto(
         BigDecimal price,
         @Size(min = 10, max = 500, message = "must have some useful information")
         String description,
-        @URL(message = "must contain a URL that links to the book image")
+        @NotBlank(message = "can't be blank or null")
         String coverImage
 ) {
 }
