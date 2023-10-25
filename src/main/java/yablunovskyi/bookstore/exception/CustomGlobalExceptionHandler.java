@@ -25,8 +25,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             HttpStatusCode status,
             WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
@@ -36,7 +34,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
     
     @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException e) {
+    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
         StringBuilder builder = new StringBuilder();
         builder.append("timestamp: ").append(LocalDateTime.now()).append(System.lineSeparator())
                 .append("status: entity not found").append(System.lineSeparator())
