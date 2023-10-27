@@ -33,9 +33,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("errors", e.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
     }
     
     private String getErrorMessage(ObjectError e) {

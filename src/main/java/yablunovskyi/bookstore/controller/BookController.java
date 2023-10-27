@@ -26,6 +26,7 @@ import yablunovskyi.bookstore.service.BookService;
 public class BookController {
     private final BookService bookService;
     
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<BookDto> findAll() {
         return bookService.findAll();
