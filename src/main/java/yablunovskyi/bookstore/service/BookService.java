@@ -1,6 +1,7 @@
 package yablunovskyi.bookstore.service;
 
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import yablunovskyi.bookstore.dto.BookDto;
 import yablunovskyi.bookstore.dto.CreateBookRequestDto;
 
@@ -9,7 +10,7 @@ public interface BookService {
     
     BookDto findById(Long id);
     
-    List<BookDto> findAll();
+    List<BookDto> findAll(Pageable pageable);
     
     BookDto updateById(Long id, CreateBookRequestDto requestDto);
     
