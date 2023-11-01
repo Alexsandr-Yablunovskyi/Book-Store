@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRegistrationRequest {
+public class UserRegistrationRequestDto {
     @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",
             message = "must match pattern 'username@domain.com'")
@@ -27,4 +27,5 @@ public class UserRegistrationRequest {
     
     @NotBlank(message = "can't be blank or null")
     private String lastName;
+    private String shippingAddress;
 }

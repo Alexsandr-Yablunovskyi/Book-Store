@@ -6,4 +6,5 @@ import yablunovskyi.bookstore.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByName(Role.RoleName name);
 }
