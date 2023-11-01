@@ -22,14 +22,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     
-    /*@Override
-    public UserResponseDto findByEmail(String email) {
-        return userMapper.toDto(userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException(
-                "Can't find user by email: %s".formatted(email)
-        )));
-    }*/
-    
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
@@ -39,7 +31,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Collections.singleton(roleRepository.findByName(Role.RoleName.USER)));
+        user.setRoles(Collections.singleton(roleRepository.findByName(Role.RoleName.ADMIN)));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
