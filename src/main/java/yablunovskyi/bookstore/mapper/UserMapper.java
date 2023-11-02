@@ -4,7 +4,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import yablunovskyi.bookstore.dto.user.UserRegistrationRequestDto;
-import yablunovskyi.bookstore.dto.user.UserResponseDto;
+import yablunovskyi.bookstore.dto.user.UserRegistrationResponseDto;
 import yablunovskyi.bookstore.model.User;
 
 @Mapper(
@@ -13,7 +13,7 @@ import yablunovskyi.bookstore.model.User;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface UserMapper {
-    UserResponseDto toDto(User user);
+    UserRegistrationResponseDto toDto(User user);
     
     User toUser(UserRegistrationRequestDto request);
 }

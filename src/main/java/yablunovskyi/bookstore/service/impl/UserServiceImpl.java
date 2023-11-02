@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import yablunovskyi.bookstore.dto.user.UserRegistrationRequestDto;
-import yablunovskyi.bookstore.dto.user.UserResponseDto;
+import yablunovskyi.bookstore.dto.user.UserRegistrationResponseDto;
 import yablunovskyi.bookstore.exception.RegistrationException;
 import yablunovskyi.bookstore.mapper.UserMapper;
 import yablunovskyi.bookstore.model.Role;
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     
     @Override
-    public UserResponseDto register(UserRegistrationRequestDto request)
+    public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new RegistrationException(("Unable to complete registration. "

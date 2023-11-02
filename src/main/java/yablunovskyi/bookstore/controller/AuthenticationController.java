@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import yablunovskyi.bookstore.dto.user.UserLoginRequestDto;
 import yablunovskyi.bookstore.dto.user.UserLoginResponseDto;
 import yablunovskyi.bookstore.dto.user.UserRegistrationRequestDto;
-import yablunovskyi.bookstore.dto.user.UserResponseDto;
+import yablunovskyi.bookstore.dto.user.UserRegistrationResponseDto;
 import yablunovskyi.bookstore.exception.RegistrationException;
 import yablunovskyi.bookstore.security.AuthenticationService;
 import yablunovskyi.bookstore.service.UserService;
@@ -31,7 +31,8 @@ public class AuthenticationController {
     }
     
     @PostMapping("/register")
-    public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto request)
+    public UserRegistrationResponseDto register(
+            @RequestBody @Valid UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
     }
