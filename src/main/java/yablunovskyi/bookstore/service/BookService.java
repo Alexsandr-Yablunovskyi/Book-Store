@@ -2,8 +2,8 @@ package yablunovskyi.bookstore.service;
 
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import yablunovskyi.bookstore.dto.BookDto;
-import yablunovskyi.bookstore.dto.CreateBookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookDto;
+import yablunovskyi.bookstore.dto.book.CreateBookRequestDto;
 
 public interface BookService {
     BookDto save(CreateBookRequestDto requestDto);

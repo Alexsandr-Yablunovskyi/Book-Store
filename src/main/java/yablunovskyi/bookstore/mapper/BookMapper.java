@@ -4,8 +4,8 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
-import yablunovskyi.bookstore.dto.BookDto;
-import yablunovskyi.bookstore.dto.CreateBookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookDto;
+import yablunovskyi.bookstore.dto.book.CreateBookRequestDto;
 import yablunovskyi.bookstore.model.Book;
 
 @Mapper(
