@@ -1,14 +1,13 @@
 package yablunovskyi.bookstore.dto.book;
 
 import java.math.BigDecimal;
-import java.util.Set;
-import yablunovskyi.bookstore.model.Category;
+// use as a response for the endpoint
+// GET: /api/categories/{id}/books (Retrieve books by a specific category)
 
-public record BookResponseDto(
+public record BookResponseDtoWithoutCategoryIds(
         Long id,
         String title,
         String author,
-        Set<Category> categories,
         String isbn,
         BigDecimal price,
         String description,

@@ -36,6 +36,12 @@ public class Book {
     @Column(nullable = false)
     private String author;
     
+    @ManyToMany
+    @JoinTable(name = "books_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+    
     @Column(nullable = false, unique = true)
     private String isbn;
     
@@ -43,12 +49,6 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
-    
-    @ManyToMany
-    @JoinTable(name = "books_categories",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
     
     @Column(nullable = false)
     private boolean isDeleted = false;
