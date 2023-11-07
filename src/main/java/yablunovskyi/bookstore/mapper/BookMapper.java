@@ -4,8 +4,8 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
-import yablunovskyi.bookstore.dto.book.BookDto;
-import yablunovskyi.bookstore.dto.book.CreateBookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookResponseDto;
 import yablunovskyi.bookstore.model.Book;
 
 @Mapper(
@@ -14,9 +14,9 @@ import yablunovskyi.bookstore.model.Book;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface BookMapper {
-    BookDto toDto(Book book);
+    BookResponseDto toDto(Book book);
     
-    Book toBook(CreateBookRequestDto requestDto);
+    Book toBook(BookRequestDto requestDto);
     
-    void updateRequestDtoToBook(CreateBookRequestDto requestDto, @MappingTarget Book book);
+    void updateRequestDtoToBook(BookRequestDto requestDto, @MappingTarget Book book);
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public record CreateBookRequestDto(
+public record BookRequestDto(
         @NotBlank(message = "can't be blank or null")
         String title,
         @NotBlank(message = "can't be blank or null")
