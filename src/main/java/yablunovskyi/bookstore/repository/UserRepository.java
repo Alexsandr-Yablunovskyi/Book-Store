@@ -10,4 +10,6 @@ import yablunovskyi.bookstore.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
+    
+    Boolean existsByEmail(String email);
 }

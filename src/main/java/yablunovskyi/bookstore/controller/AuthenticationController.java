@@ -1,6 +1,5 @@
 package yablunovskyi.bookstore.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +15,6 @@ import yablunovskyi.bookstore.exception.RegistrationException;
 import yablunovskyi.bookstore.security.AuthenticationService;
 import yablunovskyi.bookstore.service.UserService;
 
-@Tag(name = "Authentication process", description = "Endpoints to process user authentication")
 @RestController
 @Validated
 @RequiredArgsConstructor
@@ -26,14 +24,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto request) {
+    public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto request) {
         return authenticationService.authenticate(request);
     }
     
     @PostMapping("/register")
     public UserRegistrationResponseDto register(
-            @RequestBody @Valid UserRegistrationRequestDto request)
-            throws RegistrationException {
+            @RequestBody @Valid UserRegistrationRequestDto request) throws RegistrationException {
         return userService.register(request);
     }
 }
