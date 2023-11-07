@@ -6,4 +6,5 @@ import yablunovskyi.bookstore.model.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+    //List<Book> findAllByCategories(Long categoryId);
 }
