@@ -2,12 +2,14 @@ package yablunovskyi.bookstore.mapper;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import yablunovskyi.bookstore.dto.book.BookRequestDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
 import yablunovskyi.bookstore.model.Book;
+import yablunovskyi.bookstore.model.Category;
 
 @Mapper(
         componentModel = "spring",
@@ -15,6 +17,7 @@ import yablunovskyi.bookstore.model.Book;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface BookMapper {
+    @Mapping(source = "categories", target = "categoriesId")
     BookResponseDto toDto(Book book);
     
     Book toBook(BookRequestDto requestDto);
@@ -22,8 +25,8 @@ public interface BookMapper {
     void updateRequestDtoToBook(BookRequestDto requestDto, @MappingTarget Book book);
     
     BookResponseDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
-    // for the GET /api/categories/{id}/books (Retrieve books by a specific category)
     
-    //@AfterMapping default
-    void setCategoryIds(@MappingTarget BookResponseDto bookDto, Book book);
+    default Long getCategoryId(Category category) {
+        return category.getId();
+    }
 }

@@ -1,26 +1,33 @@
 package yablunovskyi.bookstore.service.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import yablunovskyi.bookstore.dto.book.BookRequestDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDto;
+import yablunovskyi.bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
 import yablunovskyi.bookstore.exception.EntityNotFoundException;
 import yablunovskyi.bookstore.mapper.BookMapper;
 import yablunovskyi.bookstore.model.Book;
+import yablunovskyi.bookstore.model.Category;
 import yablunovskyi.bookstore.repository.BookRepository;
+import yablunovskyi.bookstore.repository.CategoryRepository;
 import yablunovskyi.bookstore.service.BookService;
 
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
+    private final CategoryRepository categoryRepository;
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     
     @Override
     public BookResponseDto save(BookRequestDto requestDto) {
         Book book = bookMapper.toBook(requestDto);
+        book.setCategories(categoriesIdToCategories(requestDto.categoriesId()));
         return bookMapper.toDto(bookRepository.save(book));
     }
     
@@ -44,11 +51,29 @@ public class BookServiceImpl implements BookService {
                 () -> new EntityNotFoundException("Can't find a book by id: " + id)
         );
         bookMapper.updateRequestDtoToBook(requestDto, book);
+        book.setCategories(categoriesIdToCategories(requestDto.categoriesId()));
         return bookMapper.toDto(bookRepository.save(book));
     }
     
     @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+    
+    @Override
+    public List<BookResponseDtoWithoutCategoryIds> findBooksByCategoryId(Long id,
+                                                                         Pageable pageable) {
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Entity with id: %d doesn't exist".formatted(id));
+        }
+        return bookRepository.findAllByCategoriesId(id, pageable).stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .toList();
+    }
+    
+    private Set<Category> categoriesIdToCategories(List<Long> categoriesId) {
+        return categoriesId.stream()
+                .map(categoryRepository::getReferenceById)
+                .collect(Collectors.toSet());
     }
 }

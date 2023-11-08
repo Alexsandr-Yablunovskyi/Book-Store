@@ -1,14 +1,13 @@
 package yablunovskyi.bookstore.dto.book;
 
 import java.math.BigDecimal;
-import java.util.Set;
-import yablunovskyi.bookstore.model.Category;
+import java.util.List;
 
 public record BookResponseDto(
         Long id,
         String title,
         String author,
-        Set<Category> categories,
+        List<Long> categoriesId,
         String isbn,
         BigDecimal price,
         String description,

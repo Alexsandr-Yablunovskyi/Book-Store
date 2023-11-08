@@ -33,7 +33,7 @@ public class BookController {
     
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all books",
-            description = "Get a list of all available books from the datase")
+            description = "Get a list of all available books from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public List<BookResponseDto> findAll(Pageable pageable) {
