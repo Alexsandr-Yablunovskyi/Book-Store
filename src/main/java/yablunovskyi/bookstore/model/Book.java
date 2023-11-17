@@ -36,6 +36,7 @@ public class Book {
     @Column(nullable = false)
     private String author;
     
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "books_categories",
             joinColumns = @JoinColumn(name = "book_id"),

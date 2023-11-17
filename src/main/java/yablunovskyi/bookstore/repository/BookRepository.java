@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import yablunovskyi.bookstore.model.Book;
 
@@ -16,11 +17,15 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @EntityGraph(attributePaths = "categories")
     Optional<Book> findById(Long id);
     
+    //for updating
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Specification<Book> spec, Pageable pageable);
     
+    //for getAllBooks to avoid lazyInitializationException
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Pageable pageable);
     
-    List<Book> findAllByCategoriesId(Long categoryId, Pageable pageable);
+    @Query("select b from Book b join fetch b.categories c where c.id = :id")
+    List<Book> findAllByCategoriesId(Long id);
+    
 }

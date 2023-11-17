@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto save(CategoryRequestDto requestDto) {
         Category category = categoryMapper.toCategory(requestDto);
-        return categoryMapper.toDto(category);
+        return categoryMapper.toDto(categoryRepository.save(category));
     }
     
     @Override
@@ -49,6 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
     
     @Override
     public void deleteById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Entity with id: %d doesn't exist".formatted(id));
+        }
         categoryRepository.deleteById(id);
     }
 }

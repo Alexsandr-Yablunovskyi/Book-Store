@@ -1,9 +1,11 @@
 package yablunovskyi.bookstore.mapper;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import yablunovskyi.bookstore.dto.category.CategoryRequestDto;
 import yablunovskyi.bookstore.dto.category.CategoryResponseDto;
 import yablunovskyi.bookstore.model.Category;
@@ -16,8 +18,9 @@ import yablunovskyi.bookstore.model.Category;
 public interface CategoryMapper {
     CategoryResponseDto toDto(Category category);
     
-    Category toCategory(CategoryRequestDto requestDto0);
+    Category toCategory(CategoryRequestDto requestDto);
     
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateRequestDtoToCategory(
             CategoryRequestDto requestDto, @MappingTarget Category category);
 }

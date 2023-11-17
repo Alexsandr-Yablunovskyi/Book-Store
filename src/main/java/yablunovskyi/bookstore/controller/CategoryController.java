@@ -43,7 +43,6 @@ public class CategoryController {
         return categoryService.save(requestDto);
     }
     
-    @ResponseStatus
     @Operation(summary = "Get a category by id",
             description = "Get a valid category by id from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -52,7 +51,6 @@ public class CategoryController {
         return categoryService.findById(id);
     }
     
-    @ResponseStatus
     @Operation(summary = "Get all categories from the database",
             description = "Get a list of all available categories from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -61,7 +59,6 @@ public class CategoryController {
         return categoryService.findAll(pageable);
     }
     
-    @ResponseStatus
     @Operation(summary = "Update a category by id",
             description = "Update a category by id with a valid information in the database")
     @PreAuthorize("hasRole('ADMIN')")
@@ -81,15 +78,12 @@ public class CategoryController {
         categoryService.deleteById(id);
     }
     
-    @ResponseStatus
     @Operation(summary = "Get all books by category id",
             description = "Get all books by category id from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}/books")
     public List<BookResponseDtoWithoutCategoryIds> findBooksByCategoryId(
-            @PathVariable @Positive Long id,
-            @RequestBody @Valid Pageable pageable) {
-        return bookService.findBooksByCategoryId(id, pageable);
+            @PathVariable @Positive Long id) {
+        return bookService.findBooksByCategoryId(id);
     }
-    
 }

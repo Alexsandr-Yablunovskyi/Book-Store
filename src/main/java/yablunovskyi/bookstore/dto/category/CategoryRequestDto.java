@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Size;
 public record CategoryRequestDto(
         @NotBlank(message = "can't be blank or null")
         String name,
-        @Size(min = 10, max = 500, message = "must have some useful information")
+        @Size(min = 10, max = 255, message =
+                "must have more than 10 and less than 255 symbols length"
+                + "and have some useful information")
         String description
 ) {
 }
