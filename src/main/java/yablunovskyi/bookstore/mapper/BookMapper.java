@@ -1,10 +1,12 @@
 package yablunovskyi.bookstore.mapper;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import yablunovskyi.bookstore.dto.book.BookRequestDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDtoWithoutCategoryIds;
@@ -22,6 +24,7 @@ public interface BookMapper {
     
     Book toBook(BookRequestDto requestDto);
     
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateRequestDtoToBook(BookRequestDto requestDto, @MappingTarget Book book);
     
     BookResponseDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
