@@ -8,6 +8,8 @@ import yablunovskyi.bookstore.dto.shoppingcart.UpdateCartItemRequestDto;
 public interface ShoppingCartService {
     CartResponseDto addCartItem(Authentication authentication, CreateCartItemRequestDto requestDto);
     
+    CartResponseDto getUserCart(Authentication authentication);
+    
     CartResponseDto updateCartItem(
             Authentication authentication, Long id, UpdateCartItemRequestDto requestDto);
     
