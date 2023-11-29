@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import yablunovskyi.bookstore.dto.book.BookDto;
-import yablunovskyi.bookstore.dto.book.CreateBookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookRequestDto;
+import yablunovskyi.bookstore.dto.book.BookResponseDto;
 import yablunovskyi.bookstore.service.BookService;
 
 @Tag(name = "Book management", description = "Endpoints to managing books")
@@ -33,10 +33,10 @@ public class BookController {
     
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all books",
-            description = "Get a list of all available books from the datase")
+            description = "Get a list of all available books from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookResponseDto> findAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
     
@@ -45,7 +45,7 @@ public class BookController {
             description = "Get a book by id from the database")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
-    public BookDto findById(@PathVariable @Positive Long id) {
+    public BookResponseDto findById(@PathVariable @Positive Long id) {
         return bookService.findById(id);
     }
     
@@ -54,7 +54,7 @@ public class BookController {
             description = "Save a valid information about book in the database")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public BookDto save(@RequestBody @Valid CreateBookRequestDto requestDto) {
+    public BookResponseDto save(@RequestBody @Valid BookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
     
@@ -63,8 +63,8 @@ public class BookController {
             description = "Update a book by id with a valid information in the database")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public BookDto updateById(
-            @PathVariable @Positive Long id, @RequestBody @Valid CreateBookRequestDto requestDto) {
+    public BookResponseDto updateById(
+            @PathVariable @Positive Long id, @RequestBody @Valid BookRequestDto requestDto) {
         return bookService.updateById(id, requestDto);
     }
     

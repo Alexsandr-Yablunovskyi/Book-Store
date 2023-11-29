@@ -14,3 +14,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/05-set-default-roles.yaml
 
+  - include:
+      file: db/changelog/changes/06-create-categories-table.yaml
+
+  - include:
+      file: db/changelog/changes/07-create-books-categories-table.yaml
