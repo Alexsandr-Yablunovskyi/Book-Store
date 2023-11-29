@@ -20,7 +20,6 @@ import lombok.Setter;
 @Setter
 public class ShoppingCart {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @MapsId
