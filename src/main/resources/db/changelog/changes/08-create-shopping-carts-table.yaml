@@ -9,8 +9,12 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
-                    foreignKeyName: fk_shopping_carts_users
-                    references: users(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false

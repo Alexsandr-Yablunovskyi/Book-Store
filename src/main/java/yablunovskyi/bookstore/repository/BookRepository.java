@@ -21,5 +21,4 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     
     @Query("select b from Book b join fetch b.categories c where c.id = :id")
     List<Book> findAllByCategoriesId(Long id);
-    
 }
