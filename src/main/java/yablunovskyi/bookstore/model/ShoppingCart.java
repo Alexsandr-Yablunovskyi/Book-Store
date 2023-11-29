@@ -11,8 +11,8 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +31,7 @@ public class ShoppingCart {
     private User user;
     
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItems = new ArrayList<>();
+    private Set<CartItem> cartItems = new HashSet<>();
     
     public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
