@@ -60,6 +60,7 @@ public class ShoppingCartController {
         return shoppingCartService.updateCartItem(authentication, cartItemId, requestDto);
     }
     
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete cart item",
             description = "Delete cart item from the logged-up user shopping cart")
     @PreAuthorize("hasRole('USER')")
