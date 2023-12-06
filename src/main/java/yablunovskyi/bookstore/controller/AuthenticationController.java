@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import yablunovskyi.bookstore.dto.user.UserLoginRequestDto;
 import yablunovskyi.bookstore.dto.user.UserLoginResponseDto;
 import yablunovskyi.bookstore.dto.user.UserRegistrationRequestDto;
@@ -13,6 +14,7 @@ import yablunovskyi.bookstore.exception.RegistrationException;
 import yablunovskyi.bookstore.security.AuthenticationService;
 import yablunovskyi.bookstore.service.UserService;
 
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthenticationController {

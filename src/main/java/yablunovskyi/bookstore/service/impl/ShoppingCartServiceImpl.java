@@ -84,6 +84,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
     
     @Override
+    @Transactional
     public CartResponseDto updateCartItem(
             Authentication authentication, Long id, UpdateCartItemRequestDto requestDto) {
         ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
