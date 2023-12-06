@@ -104,10 +104,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     
     @Override
     @Transactional
-    public CartResponseDto deleteCartItem(Authentication authentication, Long id) {
+    public void deleteCartItem(Authentication authentication, Long id) {
         ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
         CartItem cartItem = findCartItemByIdAndUser(id, authentication.getName());
         shoppingCart.removeCartItem(cartItem);
-        return shoppingCartMapper.toDto(shoppingCart);
+        //return shoppingCartMapper.toDto(shoppingCart);
     }
 }
