@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-category-table
+      id: create-cart-items-table
       author: OleksandrYablunovskyi
       changes:
         - createTable:
-            tableName: categories
+            tableName: cart_items
             columns:
               - column:
                   name: id
@@ -14,16 +14,18 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(255)
+                  name: shopping_cart_id
+                  type: bigint
                   constraints:
                     nullable: false
               - column:
-                  name: description
-                  type: varchar(255)
-              - column:
-                  name: is_deleted
-                  type: boolean
-                  defaultValueBoolean: false
+                  name: book_id
+                  type: bigint
                   constraints:
                     nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+

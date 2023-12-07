@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-book-table
-      author: yablunovskyi
+      author: OleksandrYablunovskyi
       changes:
         - createTable:
             tableName: books
