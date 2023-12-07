@@ -65,9 +65,9 @@ public class ShoppingCartController {
             description = "Delete cart item from the logged-up user shopping cart")
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/cart-items/{cartItemId}")
-    public CartResponseDto deleteCartItem(
+    public void deleteCartItem(
             Authentication authentication,
             @PathVariable @Positive Long cartItemId) {
-        return shoppingCartService.deleteCartItem(authentication, cartItemId);
+        shoppingCartService.deleteCartItem(authentication, cartItemId);
     }
 }

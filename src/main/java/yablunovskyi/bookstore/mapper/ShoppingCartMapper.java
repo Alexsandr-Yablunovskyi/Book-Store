@@ -10,7 +10,8 @@ import yablunovskyi.bookstore.model.ShoppingCart;
 @Mapper(
         componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = CartItemMapper.class
 )
 public interface ShoppingCartMapper {
     @Mapping(source = "user.id", target = "userId")

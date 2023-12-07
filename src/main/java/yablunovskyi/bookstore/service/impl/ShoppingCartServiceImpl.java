@@ -37,7 +37,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserEmail(authentication.getName())
                 .orElseGet(
                         () -> createUserShoppingCart((User) authentication.getPrincipal()
-                ));
+                        ));
         cartItemRepository.findByShoppingCartAndBookId(shoppingCart, requestDto.bookId())
                 .ifPresentOrElse(
                         cartItem -> cartItem.setQuantity(
@@ -45,6 +45,31 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         () -> createCartItem(requestDto, shoppingCart)
                 );
         return shoppingCartMapper.toDto(shoppingCart);
+    }
+    
+    @Override
+    @Transactional
+    public CartResponseDto getUserCart(Authentication authentication) {
+        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
+        return shoppingCartMapper.toDto(shoppingCart);
+    }
+    
+    @Override
+    @Transactional
+    public CartResponseDto updateCartItem(
+            Authentication authentication, Long id, UpdateCartItemRequestDto requestDto) {
+        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
+        CartItem cartItem = findCartItemByIdAndUser(id, authentication.getName());
+        cartItem.setQuantity(requestDto.quantity());
+        return shoppingCartMapper.toDto(shoppingCart);
+    }
+    
+    @Override
+    @Transactional
+    public void deleteCartItem(Authentication authentication, Long id) {
+        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
+        CartItem cartItem = findCartItemByIdAndUser(id, authentication.getName());
+        shoppingCart.removeCartItem(cartItem);
     }
     
     private void checkIfBookExists(Long bookId) {
@@ -68,12 +93,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.save(cartItem);
     }
     
-    @Override
-    public CartResponseDto getUserCart(Authentication authentication) {
-        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
-        return shoppingCartMapper.toDto(shoppingCart);
-    }
-    
     private ShoppingCart getUserShoppingCart(String email) {
         return shoppingCartRepository.findByUserEmail(email)
                 .orElseThrow(
@@ -81,15 +100,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                                 "Can't find a cart for a user with email: %s".formatted(email)
                         )
                 );
-    }
-    
-    @Override
-    public CartResponseDto updateCartItem(
-            Authentication authentication, Long id, UpdateCartItemRequestDto requestDto) {
-        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
-        CartItem cartItem = findCartItemByIdAndUser(id, authentication.getName());
-        cartItem.setQuantity(requestDto.quantity());
-        return shoppingCartMapper.toDto(shoppingCart);
     }
     
     private CartItem findCartItemByIdAndUser(Long id, String email) {
@@ -100,14 +110,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                                         .formatted(id, email)
                         )
                 );
-    }
-    
-    @Override
-    @Transactional
-    public CartResponseDto deleteCartItem(Authentication authentication, Long id) {
-        ShoppingCart shoppingCart = getUserShoppingCart(authentication.getName());
-        CartItem cartItem = findCartItemByIdAndUser(id, authentication.getName());
-        shoppingCart.removeCartItem(cartItem);
-        return shoppingCartMapper.toDto(shoppingCart);
     }
 }
