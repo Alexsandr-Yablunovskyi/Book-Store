@@ -67,8 +67,8 @@ public class OrderController {
             description = "Get a list with information about logged-up user specific order items")
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{orderId}/items")
-    public List<OrderItemDto> getOrderItems(@PathVariable @Positive Long id) {
-        return orderService.getOrderItemsByOrder(id);
+    public List<OrderItemDto> getOrderItems(@PathVariable @Positive Long orderId) {
+        return orderService.getOrderItemsByOrder(orderId);
     }
     
     @Operation(summary = "Get an order item by id",
