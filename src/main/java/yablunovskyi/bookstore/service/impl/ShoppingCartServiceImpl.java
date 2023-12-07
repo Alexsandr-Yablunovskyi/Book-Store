@@ -31,21 +31,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     
     @Override
     @Transactional
-    /*public CartResponseDto addCartItem(
-            Authentication authentication, CreateCartItemRequestDto requestDto) {
-        checkIfBookExists(requestDto.bookId());
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserEmail(authentication.getName())
-                .orElseGet(
-                        () -> createUserShoppingCart((User) authentication.getPrincipal()
-                        ));
-        cartItemRepository.findByShoppingCartAndBookId(shoppingCart, requestDto.bookId())
-                .ifPresentOrElse(
-                        cartItem -> cartItem.setQuantity(
-                                cartItem.getQuantity() + requestDto.quantity()),
-                        () -> createCartItem(requestDto, shoppingCart)
-                );
-        return shoppingCartMapper.toDto(shoppingCart);
-    }*/
     public CartResponseDto addCartItem(
             Authentication authentication, CreateCartItemRequestDto requestDto) {
         checkIfBookExists(requestDto.bookId());
@@ -59,7 +44,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                                 cartItem.getQuantity() + requestDto.quantity()),
                         () -> createCartItem(requestDto, shoppingCart)
                 );
-        return shoppingCartMapper.toDto(shoppingCartRepository.save(shoppingCart));
+        return shoppingCartMapper.toDto(shoppingCart);
     }
     
     @Override
