@@ -55,6 +55,39 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(orderRepository.save(order));
     }
     
+    @Override
+    public List<OrderResponseDto> getOrders(Pageable pageable) {
+        return orderMapper.toDtoList(orderRepository.findByUserId(findUser().getId(), pageable));
+    }
+    
+    @Override
+    @Transactional
+    public OrderResponseDto updateOrder(Long id, UpdateStatusRequestDto requestDto) {
+        Order order = orderRepository.getReferenceById(id);
+        order.setStatus(Order.Status.valueOf(requestDto.status()));
+        return orderMapper.toDto(order);
+    }
+    
+    @Override
+    public List<OrderItemDto> getOrderItemsByOrder(Long id) {
+        return orderItemRepository.findAllByOrderId(findOrder(id).getId())
+                .stream()
+                .map(orderItemMapper::toDto)
+                .toList();
+    }
+    
+    @Override
+    public OrderItemDto getOrderItemById(Long orderId, Long id) {
+        return orderItemMapper.toDto(orderItemRepository
+                .findByIdAndOrderId(id, findOrder(orderId).getId())
+                .orElseThrow(
+                        () -> new EntityNotFoundException(
+                        "Can't find order item with id: %d for order with id: %d"
+                                .formatted(id, orderId))
+                )
+        );
+    }
+    
     private User findUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).orElseThrow(()
@@ -84,43 +117,10 @@ public class OrderServiceImpl implements OrderService {
         return orderItems;
     }
     
-    @Override
-    public List<OrderResponseDto> getOrders(Pageable pageable) {
-        return orderMapper.toDtoList(orderRepository.findByUserId(findUser().getId(), pageable));
-    }
-    
-    @Override
-    @Transactional
-    public OrderResponseDto updateOrder(Long id, UpdateStatusRequestDto requestDto) {
-        Order order = orderRepository.getReferenceById(id);
-        order.setStatus(Order.Status.valueOf(requestDto.status()));
-        return orderMapper.toDto(order);
-    }
-    
-    @Override
-    public List<OrderItemDto> getOrderItemsByOrder(Long id) {
-        return orderItemRepository.findAllByOrderId(findOrder(id).getId())
-                .stream()
-                .map(orderItemMapper::toDto)
-                .toList();
-    }
-    
     private Order findOrder(Long id) {
         return orderRepository.findByUserIdAndId(findUser().getId(), id).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Can't find order for current user with id: %d".formatted(id))
-        );
-    }
-    
-    @Override
-    public OrderItemDto getOrderItemById(Long orderId, Long id) {
-        return orderItemMapper.toDto(orderItemRepository
-                .findByIdAndOrderId(id, findOrder(orderId).getId())
-                .orElseThrow(
-                        () -> new EntityNotFoundException(
-                        "Can't find order item with id: %d for order with id: %d"
-                                .formatted(id, orderId))
-                )
         );
     }
 }
