@@ -40,6 +40,36 @@ which makes it possible to quickly scale, supplement and develop the project in 
 
 ![Database Architecture](https://github.com/Alexsandr-Yablunovskyi/book-store/blob/master/db_architecture.png)
 
+## App abilities
+
+### How can USER interact with app
+- **Authentication:**
+  - Safely join the store.
+  - Log in to discover and buy books.
+- **Book management:**
+  - Explore the complete collection of available books.
+  - Examine detailed information about individual books.
+- **Category management:**
+  - Navigate through diverse book categories.
+  - Review books within a specific category.
+- **Shopping Cart management:**
+  - Add selected books to shopping cart.
+  - Monitor and organize items within the cart.
+  - Remove unwanted books from the cart.
+- **Order process management:**
+  - Complete the purchase of all items in the cart securely.
+  - Retrieve historical information on past orders.
+- **Order information management:**
+  - Review all items included in a particular order.
+  - Access detailed views of specific items within an order.
+### How can ADMIN interact with app
+- **Book management:**
+  - Add, update, or delete books from the store's inventory.
+- **Category management:**
+  - Create, update, or delete book categories.
+- **Order management:**
+  - Update order status.
+
 ## API documentation:
 ---
 
@@ -103,8 +133,8 @@ which makes it possible to quickly scale, supplement and develop the project in 
 ### Project Setup
 
 To set up the project locally, follow these steps:
-1. Clone the repository: `git clone https://github.com/Alexsandr-Yablunovskyi/book-store`
-2. Navigate to the project directory: `cd book-store`
+1. Make sure you have JDK
+2. Clone [the repository from the GitHub](https://github.com/Alexsandr-Yablunovskyi/book-store)
 3. Build the project using Maven: `mvn clean install`
 4. Run the application: `mvn spring-boot:run`
    
