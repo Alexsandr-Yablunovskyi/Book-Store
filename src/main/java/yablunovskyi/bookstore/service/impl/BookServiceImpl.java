@@ -21,7 +21,7 @@ import yablunovskyi.bookstore.service.BookService;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
-    private final BookRepository bookRepository;
+        private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     
     @Override
