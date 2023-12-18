@@ -130,13 +130,16 @@ which makes it possible to quickly scale, supplement and develop the project in 
 
 ---
 
-### Project Setup
+### Project Setup with Docker
 
-To set up the project locally, follow these steps:
 1. Make sure you have JDK
 2. Clone [the repository from the GitHub](https://github.com/Alexsandr-Yablunovskyi/book-store)
-3. Build the project using Maven: `mvn clean install`
-4. Run the application: `mvn spring-boot:run`
+3. Create an `.env` file with the necessary environment variables (as an example for filling - `.env.sample`). 
+4. Run `mvn clean package` command
+5. [Install Docker](https://docs.docker.com/get-docker)
+6. Run `docker-compose build && docker-compose up` command to build and start the Docker containers
+7. The application should be running at http://localhost:8081
+8. Swagger is available for testing at http://localhost:8081/api/swagger-ui/index.html#/
    
 ### Contact
 
