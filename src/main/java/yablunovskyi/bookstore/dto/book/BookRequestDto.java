@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 public record BookRequestDto(
         @NotBlank(message = "can't be blank or null")
@@ -16,7 +16,10 @@ public record BookRequestDto(
         @NotBlank(message = "can't be blank or null")
         String author,
         @NotEmpty
-        List<@Positive Long> categoriesId,
+        Set<@Positive Long> categoriesIds,
+        
+        /*@NotEmpty
+        List<@Positive Long> categoriesIds,*/
         @Pattern(regexp = "^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\\d-]+$",
                 message = "must contain 10 digits and may or may not contain a hyphen")
         String isbn,

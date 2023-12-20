@@ -19,7 +19,7 @@ import yablunovskyi.bookstore.model.Category;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface BookMapper {
-    @Mapping(source = "categories", target = "categoriesId")
+    @Mapping(source = "categories", target = "categoriesIds")
     BookResponseDto toDto(Book book);
     
     Book toBook(BookRequestDto requestDto);
