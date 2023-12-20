@@ -107,7 +107,8 @@ public class BookServiceTests {
     
     @Test
     @DisplayName("""
-            Verify findById() method works properly and info about book with existed id was return""")
+            Verify findById() method works properly
+            and info about book with existed id was return""")
     public void findById_ValidId_ReturnsValidBookResponseDto() {
         //Given
         Long bookId = 1L;
@@ -207,13 +208,13 @@ public class BookServiceTests {
         
         Pageable pageable = PageRequest.of(0, 10);
         Page<Book> books = new PageImpl<>(List.of(book1, book2));
-        List<BookResponseDto> expected = List.of(expectedDto1, expectedDto2);
         
         when(bookRepository.findAll(pageable)).thenReturn(books);
         when(bookMapper.toDto(book1)).thenReturn(expectedDto1);
         when(bookMapper.toDto(book2)).thenReturn(expectedDto2);
         
         //When
+        List<BookResponseDto> expected = List.of(expectedDto1, expectedDto2);
         List<BookResponseDto> actual = bookService.findAll(pageable);
         
         //Then
