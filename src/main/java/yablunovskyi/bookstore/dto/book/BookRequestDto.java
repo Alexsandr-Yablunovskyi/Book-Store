@@ -15,7 +15,7 @@ public record BookRequestDto(
         String title,
         @NotBlank(message = "can't be blank or null")
         String author,
-        @NotEmpty
+        @NotEmpty(message = "can't be null")
         Set<@Positive Long> categoriesIds,
         
         /*@NotEmpty
