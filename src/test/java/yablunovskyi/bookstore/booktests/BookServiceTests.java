@@ -324,7 +324,7 @@ public class BookServiceTests {
     @Test
     @DisplayName("""
             Verify findBooksByCategoryId() method works properly
-            and returned a list of BookResponseDtoWithoutCategoryIds """)
+            and returns a list of BookResponseDtoWithoutCategoryIds """)
     public void findBooksByCategoryId_ValidId_ReturnsListOfBookResponseDtoWithoutCategoryIds() {
         //Given
         Long category1Id = 1L;
