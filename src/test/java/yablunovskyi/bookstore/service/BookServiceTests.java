@@ -1,4 +1,4 @@
-package yablunovskyi.bookstore.booktests;
+package yablunovskyi.bookstore.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
