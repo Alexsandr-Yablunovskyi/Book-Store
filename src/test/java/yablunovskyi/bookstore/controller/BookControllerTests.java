@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,6 +54,11 @@ public class BookControllerTests {
                 .build();
         teardown(dataSource);
         setUpCategories(dataSource);
+    }
+    
+    @AfterAll
+    static void afterAll(@Autowired DataSource dataSource) {
+        teardownCategories(dataSource);
     }
     
     @BeforeEach
@@ -94,6 +100,17 @@ public class BookControllerTests {
             ScriptUtils.executeSqlScript(
                     connection,
                     new ClassPathResource("database/books/delete-all-books.sql")
+            );
+        }
+    }
+    
+    @SneakyThrows
+    private static void teardownCategories(DataSource dataSource) {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(true);
+            ScriptUtils.executeSqlScript(
+                    connection,
+                    new ClassPathResource("database/categories/delete-all-categories.sql")
             );
         }
     }
@@ -331,11 +348,6 @@ public class BookControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
-        
-        //Then
-        /*mockMvc.perform(get("/books/2"))
-                .andExpect(status().isNoContent())
-                .andReturn();*/
         
         MvcResult result = mockMvc.perform(get("/books")
                         .contentType(MediaType.APPLICATION_JSON))

@@ -2,7 +2,6 @@ package yablunovskyi.bookstore.repository;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

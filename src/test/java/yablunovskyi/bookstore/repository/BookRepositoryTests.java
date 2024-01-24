@@ -49,7 +49,7 @@ public class BookRepositoryTests {
             "classpath:database/categories/delete-all-categories.sql",
             "classpath:database/books/delete-all-books.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void findAllByCategoriesId_InalidId_ReturnsEmptyList() {
+    public void findAllByCategoriesId_InvalidId_ReturnsEmptyList() {
         List<Book> actual = bookRepository.findAllByCategoriesId(10L);
         
         Assertions.assertEquals(0, actual.size());
