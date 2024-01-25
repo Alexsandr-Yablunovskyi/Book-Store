@@ -9,25 +9,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,6 +33,14 @@ import yablunovskyi.bookstore.dto.category.CategoryRequestDto;
 import yablunovskyi.bookstore.dto.category.CategoryResponseDto;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(
+        scripts = "classpath:database/categories/add-default-categories.sql"
+)
+@Sql(
+        scripts = "classpath:database/categories/delete-all-categories.sql",
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+)
+@SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 public class CategoryControllerTests {
     protected static MockMvc mockMvc;
     
@@ -52,10 +55,10 @@ public class CategoryControllerTests {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-        teardown(dataSource);
+        //teardown(dataSource);
     }
     
-    @BeforeEach
+    /*@BeforeEach
     void beforeEach(@Autowired DataSource dataSource) {
         setUpCategories(dataSource);
     }
@@ -85,7 +88,7 @@ public class CategoryControllerTests {
                     new ClassPathResource("database/categories/delete-all-categories.sql")
             );
         }
-    }
+    }*/
     
     @Test
     @DisplayName("""
@@ -125,6 +128,13 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify findById() method works properly
             and returns book with specified id""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void findById_ValidId_ReturnsValidCategory() throws Exception {
         //Given
@@ -151,6 +161,13 @@ public class CategoryControllerTests {
     @Test
     @DisplayName("""
             Verify findAll() method works and returns all categories from the database""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void findAll_GivenCategoriesInDB_ReturnsAllCategories() throws Exception {
         //Given
@@ -195,6 +212,13 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify updateCategoryById() method works properly
             and returns updated CategoryResponseDto""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void updateCategoryById_ValidId_ReturnsValidDto() throws Exception {
         //Given
@@ -233,8 +257,15 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify updateCategoryById() method works properly
             and forbids the USER from updating the category""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser
-    public void updateCategoryById_InvalidId_ReturnsValidDto() throws Exception {
+    public void updateCategoryById_InvalidAccessRole_ReturnsValidDto() throws Exception {
         //Given
         CategoryRequestDto requestDto = new CategoryRequestDto(
                 "test name",
@@ -275,6 +306,13 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify delete() method works properly
             and delete category with specified id from database""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_ValidId_Success() throws Exception {
         //Given
@@ -299,6 +337,13 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify delete() method works properly
             and forbids the USER from deleting the category""")
+    /*@Sql(
+            scripts = "classpath:database/categories/add-default-categories.sql"
+    )
+    @Sql(
+            scripts = "classpath:database/categories/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+    )*/
     @WithMockUser
     public void delete_InvalidAccessRole_ReturnForbiddenStatus() throws Exception {
         //Given
@@ -330,8 +375,7 @@ public class CategoryControllerTests {
             Verify findsBookByCategoryId() method works and returns all books with
              specified category from the database""")
     @Sql(
-            scripts = "classpath:database/books/add-default-books.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+            scripts = "classpath:database/books/add-default-books.sql"
     )
     @Sql(
             scripts = "classpath:database/books/delete-all-books.sql",
