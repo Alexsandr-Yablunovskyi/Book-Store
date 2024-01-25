@@ -29,6 +29,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,6 +39,15 @@ import yablunovskyi.bookstore.dto.book.BookRequestDto;
 import yablunovskyi.bookstore.dto.book.BookResponseDto;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(
+        scripts = {"classpath:database/books/add-default-books.sql",
+                "classpath:database/categories/add-default-categories.sql"}
+)
+@Sql(
+        scripts = {"classpath:database/books/delete-all-books.sql",
+                "classpath:database/categories/delete-all-categories.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
+)
 public class BookControllerTests {
     protected static MockMvc mockMvc;
     
@@ -52,16 +62,16 @@ public class BookControllerTests {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-        teardown(dataSource);
-        setUpCategories(dataSource);
+        //teardown(dataSource);
+        //setUpCategories(dataSource);
     }
     
-    @AfterAll
+   /* @AfterAll
     static void afterAll(@Autowired DataSource dataSource) {
         teardownCategories(dataSource);
-    }
+    }*/
     
-    @BeforeEach
+    /*@BeforeEach
     void beforeEach(@Autowired DataSource dataSource) {
         setUpBooks(dataSource);
     }
@@ -69,9 +79,9 @@ public class BookControllerTests {
     @AfterEach
     void afterEach(@Autowired DataSource dataSource) {
         teardown(dataSource);
-    }
+    }*/
     
-    @SneakyThrows
+   /* @SneakyThrows
     private static void setUpCategories(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
@@ -80,9 +90,9 @@ public class BookControllerTests {
                     new ClassPathResource("database/categories/add-default-categories.sql")
             );
         }
-    }
+    }*/
     
-    @SneakyThrows
+    /*@SneakyThrows
     private static void setUpBooks(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
@@ -102,9 +112,9 @@ public class BookControllerTests {
                     new ClassPathResource("database/books/delete-all-books.sql")
             );
         }
-    }
+    }*/
     
-    @SneakyThrows
+    /*@SneakyThrows
     private static void teardownCategories(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
@@ -113,7 +123,7 @@ public class BookControllerTests {
                     new ClassPathResource("database/categories/delete-all-categories.sql")
             );
         }
-    }
+    }*/
     
     @Test
     @DisplayName("""
