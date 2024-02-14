@@ -15,11 +15,8 @@ public record BookRequestDto(
         String title,
         @NotBlank(message = "can't be blank or null")
         String author,
-        @NotEmpty(message = "can't be null")
+        @NotEmpty(message = "can't be empty")
         Set<@Positive Long> categoriesIds,
-        
-        /*@NotEmpty
-        List<@Positive Long> categoriesIds,*/
         @Pattern(regexp = "^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\\d-]+$",
                 message = "must contain 10 digits and may or may not contain a hyphen")
         String isbn,

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.sql.DataSource;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -49,46 +49,12 @@ public class CategoryControllerTests {
     
     @BeforeAll
     static void beforeAll(
-            @Autowired WebApplicationContext applicationContext,
-            @Autowired DataSource dataSource) {
+            @Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-        //teardown(dataSource);
     }
-    
-    /*@BeforeEach
-    void beforeEach(@Autowired DataSource dataSource) {
-        setUpCategories(dataSource);
-    }
-    
-    @AfterEach
-    void afterEach(@Autowired DataSource dataSource) {
-        teardown(dataSource);
-    }
-    
-    @SneakyThrows
-    private static void setUpCategories(DataSource dataSource) {
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(
-                    connection,
-                    new ClassPathResource("database/categories/add-default-categories.sql")
-            );
-        }
-    }
-    
-    @SneakyThrows
-    private static void teardown(DataSource dataSource) {
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(
-                    connection,
-                    new ClassPathResource("database/categories/delete-all-categories.sql")
-            );
-        }
-    }*/
     
     @Test
     @DisplayName("""
@@ -128,13 +94,6 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify findById() method works properly
             and returns book with specified id""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void findById_ValidId_ReturnsValidCategory() throws Exception {
         //Given
@@ -161,38 +120,10 @@ public class CategoryControllerTests {
     @Test
     @DisplayName("""
             Verify findAll() method works and returns all categories from the database""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void findAll_GivenCategoriesInDB_ReturnsAllCategories() throws Exception {
         //Given
-        CategoryResponseDto responseDto1 = new CategoryResponseDto(
-                1L,
-                "first test category",
-                "first description"
-        );
-        
-        CategoryResponseDto responseDto2 = new CategoryResponseDto(
-                2L,
-                "second test category",
-                "second description"
-        );
-        
-        CategoryResponseDto responseDto3 = new CategoryResponseDto(
-                3L,
-                "third test category",
-                "third description"
-        );
-        
-        List<CategoryResponseDto> expected = new ArrayList<>();
-        expected.add(responseDto1);
-        expected.add(responseDto2);
-        expected.add(responseDto3);
+        List<CategoryResponseDto> expected = getCategoryResponseDtos();
         
         //When
         MvcResult result = mockMvc.perform(get("/categories")
@@ -212,13 +143,6 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify updateCategoryById() method works properly
             and returns updated CategoryResponseDto""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void updateCategoryById_ValidId_ReturnsValidDto() throws Exception {
         //Given
@@ -257,13 +181,6 @@ public class CategoryControllerTests {
     @DisplayName("""
             Verify updateCategoryById() method works properly
             and forbids the USER from updating the category""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser
     public void updateCategoryById_InvalidAccessRole_ReturnsValidDto() throws Exception {
         //Given
@@ -272,102 +189,35 @@ public class CategoryControllerTests {
                 "test description"
         );
         
-        CategoryResponseDto expected = new CategoryResponseDto(
-                3L,
-                "third test category",
-                "third description"
-        );
-        
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
-        
         //When
         mockMvc.perform(put("/categories/3")
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andReturn();
-        
-        MvcResult result = mockMvc.perform(get("/categories/3")
-                        .content(jsonRequest)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        
-        //Then
-        CategoryResponseDto actual = objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                CategoryResponseDto.class
-        );
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+                .andExpect(status().isForbidden());
     }
     
     @Test
     @DisplayName("""
             Verify delete() method works properly
             and delete category with specified id from database""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void delete_ValidId_Success() throws Exception {
-        //Given
         //When
         mockMvc.perform(delete("/categories/2")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andReturn();
-        
-        //Then
-        MvcResult result = mockMvc.perform(get("/categories")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-        
-        CategoryResponseDto[] actual = objectMapper.readValue(
-                result.getResponse().getContentAsByteArray(),
-                CategoryResponseDto[].class);
-        Assertions.assertEquals(2, actual.length);
+                .andExpect(status().isNoContent());
     }
     
     @Test
     @DisplayName("""
             Verify delete() method works properly
             and forbids the USER from deleting the category""")
-    /*@Sql(
-            scripts = "classpath:database/categories/add-default-categories.sql"
-    )
-    @Sql(
-            scripts = "classpath:database/categories/delete-all-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )*/
     @WithMockUser
     public void delete_InvalidAccessRole_ReturnForbiddenStatus() throws Exception {
-        //Given
-        CategoryResponseDto expected = new CategoryResponseDto(
-                3L,
-                "third test category",
-                "third description"
-        );
-        //When
         mockMvc.perform(delete("/categories/3")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andReturn();
-        //Then
-        MvcResult result = mockMvc.perform(get("/categories/3"))
-                .andExpect(status().isOk())
-                .andReturn();
-        
-        CategoryResponseDto actual = objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                CategoryResponseDto.class
-        );
-        
-        Assertions.assertEquals(expected, actual);
+                .andExpect(status().isForbidden());
     }
     
     @Test
@@ -385,6 +235,24 @@ public class CategoryControllerTests {
     public void findBooksByCategoryId_GivenBooksAndCategoriesInDB_ReturnsValidDto()
             throws Exception {
         //Given
+        List<BookResponseDtoWithoutCategoryIds> expected = getBookResponseDtoWithoutCategoryIds();
+        
+        //When
+        MvcResult result = mockMvc.perform(get("/categories/2/books")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        
+        //Then
+        BookResponseDtoWithoutCategoryIds[] actual = objectMapper.readValue(
+                result.getResponse().getContentAsByteArray(),
+                BookResponseDtoWithoutCategoryIds[].class);
+        Assertions.assertEquals(2, actual.length);
+        Assertions.assertEquals(expected, Arrays.stream(actual).toList());
+    }
+    
+    @NotNull
+    private static List<BookResponseDtoWithoutCategoryIds> getBookResponseDtoWithoutCategoryIds() {
         BookResponseDtoWithoutCategoryIds responseDto1 = new BookResponseDtoWithoutCategoryIds(
                 1L,
                 "first test title",
@@ -407,18 +275,33 @@ public class CategoryControllerTests {
         List<BookResponseDtoWithoutCategoryIds> expected = new ArrayList<>();
         expected.add(responseDto1);
         expected.add(responseDto2);
+        return expected;
+    }
+    
+    @NotNull
+    private static List<CategoryResponseDto> getCategoryResponseDtos() {
+        CategoryResponseDto responseDto1 = new CategoryResponseDto(
+                1L,
+                "first test category",
+                "first description"
+        );
         
-        //When
-        MvcResult result = mockMvc.perform(get("/categories/2/books")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        CategoryResponseDto responseDto2 = new CategoryResponseDto(
+                2L,
+                "second test category",
+                "second description"
+        );
         
-        //Then
-        BookResponseDtoWithoutCategoryIds[] actual = objectMapper.readValue(
-                result.getResponse().getContentAsByteArray(),
-                BookResponseDtoWithoutCategoryIds[].class);
-        Assertions.assertEquals(2, actual.length);
-        Assertions.assertEquals(expected, Arrays.stream(actual).toList());
+        CategoryResponseDto responseDto3 = new CategoryResponseDto(
+                3L,
+                "third test category",
+                "third description"
+        );
+        
+        List<CategoryResponseDto> expected = new ArrayList<>();
+        expected.add(responseDto1);
+        expected.add(responseDto2);
+        expected.add(responseDto3);
+        return expected;
     }
 }

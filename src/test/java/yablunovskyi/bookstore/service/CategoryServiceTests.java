@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import yablunovskyi.bookstore.dto.category.CategoryRequestDto;
 import yablunovskyi.bookstore.dto.category.CategoryResponseDto;
 import yablunovskyi.bookstore.mapper.CategoryMapper;
+import yablunovskyi.bookstore.mapper.CategoryMapperImpl;
 import yablunovskyi.bookstore.model.Category;
 import yablunovskyi.bookstore.repository.CategoryRepository;
 import yablunovskyi.bookstore.service.impl.CategoryServiceImpl;
@@ -32,8 +34,8 @@ public class CategoryServiceTests {
     @Mock
     private CategoryRepository categoryRepository;
     
-    @Mock
-    private CategoryMapper categoryMapper;
+    @Spy
+    private CategoryMapper categoryMapper = new CategoryMapperImpl();
     
     @InjectMocks
     private CategoryServiceImpl categoryService;
